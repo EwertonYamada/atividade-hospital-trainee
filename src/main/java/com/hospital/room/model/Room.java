@@ -27,7 +27,6 @@ public class Room {
     private Ward ward;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "bed_id")
     private List<Bed> beds;
 
     public Room(String roomCode, Ward ward) {
