@@ -5,5 +5,5 @@ import com.hospital.ward.enums.Specialty;
 public record WardRequest(
         Specialty specialty,
         Integer numberOfRooms,
-        Integer numberOfBedPerRoom
+        Integer numberOfBedsPerRoom
 ) {}

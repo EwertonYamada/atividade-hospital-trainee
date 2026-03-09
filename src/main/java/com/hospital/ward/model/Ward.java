@@ -2,7 +2,6 @@ package com.hospital.ward.model;
 
 import com.hospital.hospital.model.Hospital;
 import com.hospital.room.model.Room;
-import com.hospital.ward.dto.WardRequest;
 import com.hospital.ward.enums.Specialty;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -32,8 +31,8 @@ public class Ward {
     @OneToMany(mappedBy = "ward", cascade = CascadeType.ALL)
     private List<Room> rooms;
 
-    public Ward(WardRequest specialty, Hospital hospital) {
-        this.specialty = Specialty.valueOf(String.valueOf(specialty));
+    public Ward(Specialty specialty, Hospital hospital) {
+        this.specialty = specialty;
         this.hospital = hospital;
     }
 }

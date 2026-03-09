@@ -27,7 +27,7 @@ public class RoomService {
         Integer lastRegisteredRoomNumber = this.roomRepository.findLastRoomNumber();
         for (int i = 0; i < specialty.numberOfRooms(); i++) {
             Integer nextRoomNumber = lastRegisteredRoomNumber + i + 1;
-            String code = specialtyPrefix.concat("-").concat(String.valueOf(nextRoomNumber));
+            String code = specialtyPrefix.concat(String.valueOf(nextRoomNumber));
             Room room = new Room(code, ward);
             List<Bed> beds = this.bedService.buildBed(room, specialty);
             room.setBeds(beds);

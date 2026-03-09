@@ -8,11 +8,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long> {
     @Query(nativeQuery = true, value = """
-    SELECT CAST(regexp_replace(code, '[^0-9]', '', 'g') AS INTEGER)
-    FROM room
-    WHERE code ~ '[0-9]'
-    ORDER BY CAST(regexp_replace(code, '[^0-9]', '', 'g') AS INTEGER) DESC
-    LIMIT 1
+    SELECT
+    COALESCE(MAX(last), 0)
+    FROM (
+        SELECT CAST(regexp_replace(room_code, '[^0-9]', '', 'g') AS INTEGER) AS last
+        FROM room
+        WHERE room_code ~ '[0-9]'
+    ) lastRoomCode
     """)
     Integer findLastRoomNumber();
 }

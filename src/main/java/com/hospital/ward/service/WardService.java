@@ -22,7 +22,7 @@ public class WardService {
     public List<Ward> buildWards(Hospital hospital, List<WardRequest> specialties) {
         List<Ward> wards = new ArrayList<>();
         specialties.forEach(specialty -> {
-            Ward ward = new Ward(specialty, hospital);
+            Ward ward = new Ward(specialty.specialty(), hospital);
             List<Room> rooms = this.roomService.buildRoom(ward, specialty);
             ward.setRooms(rooms);
             wards.add(ward);

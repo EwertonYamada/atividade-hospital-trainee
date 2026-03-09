@@ -9,10 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface BedRepository extends JpaRepository<Bed, Integer> {
 
     @Query(nativeQuery = true, value = """
-    SELECT bed_number
-    FROM bed
-    ORDER BY bed_number DESC
-    LIMIT 1
+    SELECT COALESCE(MAX(bed_number), 0) FROM bed
     """)
     Integer findLastBedNumber();
 }
