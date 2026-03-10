@@ -1,32 +1,30 @@
 package com.hospital.bed.service;
 
-import com.hospital.bed.enums.BedType;
+import com.hospital.bed.dto.BedRequest;
 import com.hospital.bed.model.Bed;
 import com.hospital.bed.repository.BedRepository;
 import com.hospital.room.model.Room;
-import com.hospital.ward.dto.WardRequest;
+import com.hospital.room.service.RoomService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class BedService {
 
     private final BedRepository bedRepository;
+    private final RoomService roomService;
+    private final BuildBedService buildBedService;
 
-    public BedService(BedRepository bedRepository) {
+    public BedService(BedRepository bedRepository, RoomService roomService, BuildBedService buildBedService) {
         this.bedRepository = bedRepository;
+        this.roomService = roomService;
+        this.buildBedService = buildBedService;
     }
 
-    public List<Bed> buildBed(Room room, WardRequest specialty) {
-        List<Bed> beds = new ArrayList<>();
-        Integer lastBedNumber = this.bedRepository.findLastBedNumber();
-        for (int i = 0; i < specialty.numberOfBedsPerRoom(); i++) {
-            Integer nextBedNumber = lastBedNumber + i + 1;
-            Bed bed = new Bed(room, nextBedNumber, Boolean.TRUE, BedType.INFIRMARY);
-            beds.add(bed);
-        }
-        return beds;
+    public List<Bed> create(Long roomId, BedRequest bedRequest) {
+        Room room = this.roomService.getById(roomId);
+        List<Bed> beds = this.buildBedService.buildBed(room, bedRequest.numberOfBeds());
+        return this.bedRepository.saveAll(beds);
     }
 }

@@ -1,5 +1,6 @@
 package com.hospital.ward.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hospital.hospital.model.Hospital;
 import com.hospital.room.model.Room;
 import com.hospital.ward.enums.Specialty;
@@ -26,6 +27,7 @@ public class Ward {
 
     @ManyToOne
     @JoinColumn(name = "hospital_id")
+    @JsonIgnore
     private Hospital hospital;
 
     @OneToMany(mappedBy = "ward", cascade = CascadeType.ALL)

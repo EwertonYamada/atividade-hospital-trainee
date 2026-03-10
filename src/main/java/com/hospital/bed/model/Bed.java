@@ -1,5 +1,6 @@
 package com.hospital.bed.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hospital.bed.enums.BedType;
 import com.hospital.room.model.Room;
 import jakarta.persistence.*;
@@ -22,6 +23,7 @@ public class Bed {
 
     @ManyToOne
     @JoinColumn(name = "room_id")
+    @JsonIgnore
     private Room room;
 
     @Column(name = "is_available")

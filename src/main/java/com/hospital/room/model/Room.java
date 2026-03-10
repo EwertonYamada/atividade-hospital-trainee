@@ -1,5 +1,6 @@
 package com.hospital.room.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hospital.bed.model.Bed;
 import com.hospital.ward.model.Ward;
 import jakarta.persistence.*;
@@ -24,6 +25,7 @@ public class Room {
 
     @ManyToOne
     @JoinColumn(name = "ward_id")
+    @JsonIgnore
     private Ward ward;
 
     @OneToMany(cascade = CascadeType.ALL)

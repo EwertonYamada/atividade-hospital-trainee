@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -29,12 +30,13 @@ public class Hospital {
     @Column(name = "cnpj")
     private String cnpj;
 
-    @OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ward> wards;
 
     public Hospital(String name, String phoneNumber, String cnpj) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.cnpj = cnpj;
+        this.wards = new ArrayList<>();
     }
 }
