@@ -1,10 +1,13 @@
 package com.hospital.patient.model;
 
+import com.hospital.patient.dto.PatientRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -12,6 +15,8 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Patient {
 
     @Id
@@ -26,4 +31,10 @@ public class Patient {
 
     @Column(name = "birth_date")
     private LocalDate birthDate;
+
+    public Patient(PatientRequest patientRequest) {
+        this.name = patientRequest.name();
+        this.document = patientRequest.document();
+        this.birthDate = patientRequest.birthDate();
+    }
 }
