@@ -24,7 +24,7 @@ public class RoomService {
 
     public List<Room> create(Long wardId, RoomRequest roomRequest) {
         Ward ward = this.wardService.getById(wardId);
-        List<Room> rooms = this.buildRoomService.buildRoom(ward, roomRequest.numberOfRooms(), roomRequest.bedRequest().numberOfBeds());
+        List<Room> rooms = this.buildRoomService.buildRoom(ward, roomRequest);
         return this.roomRepository.saveAll(rooms);
     }
 

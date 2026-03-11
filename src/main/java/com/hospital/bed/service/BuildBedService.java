@@ -20,11 +20,13 @@ public class BuildBedService {
 
     public List<Bed> buildBed(Room room, Integer numberOfBedsPerRoom) {
         List<Bed> beds = new ArrayList<>();
-        Integer lastBedNumber = this.bedRepository.findLastBedNumber();
-        for (int i = 0; i < numberOfBedsPerRoom; i++) {
-            Integer nextBedNumber = lastBedNumber + i + 1;
-            Bed bed = new Bed(room, nextBedNumber, Boolean.TRUE, BedType.INFIRMARY);
-            beds.add(bed);
+        if (numberOfBedsPerRoom >= 1) {
+            Integer lastBedNumber = this.bedRepository.findLastBedNumber(room.getId());
+            for (int i = 0; i < numberOfBedsPerRoom; i++) {
+                Integer nextBedNumber = lastBedNumber + i + 1;
+                Bed bed = new Bed(room, nextBedNumber, Boolean.TRUE, BedType.INFIRMARY);
+                beds.add(bed);
+            }
         }
         return beds;
     }

@@ -2,6 +2,7 @@ package com.hospital.room.service;
 
 import com.hospital.bed.model.Bed;
 import com.hospital.bed.service.BuildBedService;
+import com.hospital.room.dto.RoomRequest;
 import com.hospital.room.model.Room;
 import com.hospital.room.repository.RoomRepository;
 import com.hospital.ward.enums.Specialty;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class BuildRoomService {
@@ -22,17 +24,19 @@ public class BuildRoomService {
         this.buildBedService = buildBedService;
     }
 
-    public List<Room> buildRoom(Ward ward, Integer numberOfRooms, Integer numberOfBedsPerRoom) {
-        String specialtyPrefix = this.getSpecialtyPrefix(ward.getSpecialty());
+    public List<Room> buildRoom(Ward ward, RoomRequest roomRequest) {
         List<Room> rooms = new ArrayList<>();
-        Integer lastRegisteredRoomNumber = this.roomRepository.findLastRoomNumber(ward.getSpecialty().toString());
-        for (int i = 0; i < numberOfRooms; i++) {
-            Integer nextRoomNumber = lastRegisteredRoomNumber + i + 1;
-            String code = specialtyPrefix.concat(String.valueOf(nextRoomNumber));
-            Room room = new Room(code, ward);
-            List<Bed> beds = this.buildBedService.buildBed(room, numberOfBedsPerRoom);
-            room.setBeds(beds);
-            rooms.add(room);
+        if (Objects.nonNull(roomRequest) && roomRequest.numberOfRooms() >= 1) {
+            String specialtyPrefix = this.getSpecialtyPrefix(ward.getSpecialty());
+            Integer lastRegisteredRoomNumber = this.roomRepository.findLastRoomNumber(ward.getSpecialty().toString());
+            for (int i = 0; i < roomRequest.numberOfRooms(); i++) {
+                Integer nextRoomNumber = lastRegisteredRoomNumber + i + 1;
+                String code = specialtyPrefix.concat(String.valueOf(nextRoomNumber));
+                Room room = new Room(code, ward);
+                List<Bed> beds = this.buildBedService.buildBed(room, roomRequest.bedRequest().numberOfBeds());
+                room.setBeds(beds);
+                rooms.add(room);
+            }
         }
         return rooms;
     }
@@ -40,5 +44,4 @@ public class BuildRoomService {
     private String getSpecialtyPrefix(Specialty specialty) {
         return specialty.toString().substring(0, 4).concat("-");
     }
-
 }
