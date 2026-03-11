@@ -32,6 +32,9 @@ public class Patient {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
+    @Column(name = "is_hospitalized")
+    private boolean isHospitalized = false;
+
     public Patient(PatientRequest patientRequest) {
         this.name = patientRequest.name();
         this.document = patientRequest.document();

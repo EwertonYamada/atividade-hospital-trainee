@@ -1,4 +1,4 @@
-package com.hospital.log.enums;
+package com.hospital.admission.enums;
 
 public enum EventType {
     ADMISSION,

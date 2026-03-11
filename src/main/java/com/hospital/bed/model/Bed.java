@@ -1,6 +1,7 @@
 package com.hospital.bed.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hospital.bed.enums.BedStatus;
 import com.hospital.bed.enums.BedType;
 import com.hospital.room.model.Room;
 import jakarta.persistence.*;
@@ -26,17 +27,18 @@ public class Bed {
     @JsonIgnore
     private Room room;
 
-    @Column(name = "is_available")
-    private Boolean isAvailable;
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private BedStatus status;
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
     private BedType bedType;
 
-    public Bed(Room room, Integer nextBedNumber, Boolean aTrue, BedType bedType) {
+    public Bed(Room room, Integer nextBedNumber) {
         this.room = room;
         this.bedNumber = nextBedNumber;
-        this.isAvailable = aTrue;
-        this.bedType = bedType;
+        this.bedType = BedType.INFIRMARY;
+        this.status = BedStatus.UNOCCUPIED;
     }
 }

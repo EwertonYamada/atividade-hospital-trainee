@@ -24,7 +24,7 @@ public class BuildBedService {
             Integer lastBedNumber = this.bedRepository.findLastBedNumber(room.getId());
             for (int i = 0; i < numberOfBedsPerRoom; i++) {
                 Integer nextBedNumber = lastBedNumber + i + 1;
-                Bed bed = new Bed(room, nextBedNumber, Boolean.TRUE, BedType.INFIRMARY);
+                Bed bed = new Bed(room, nextBedNumber);
                 beds.add(bed);
             }
         }
