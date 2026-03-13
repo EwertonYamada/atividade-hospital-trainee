@@ -85,9 +85,8 @@ public class AdmissionService {
 
         Admission pastAdmission = this.admissionRepository.findActiveAdmission(request.patientId());
         discharge(pastAdmission.getId());
-        Admission prepare = prepareAdmission(request);
 
-        Admission newAdmission = prepare;
+        Admission newAdmission = prepareAdmission(request);
         this.admissionRepository.save(newAdmission);
         this.updateBed(newAdmission.getBed(), BedStatus.OCCUPIED);
         this.updatePatient(newAdmission.getPatient(), Boolean.TRUE);
