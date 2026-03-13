@@ -25,14 +25,4 @@ public class AdmissionController {
     public ResponseEntity<Admission> discharge(@PathVariable Long admissionId) {
         return ResponseEntity.ok(this.admissionService.discharge(admissionId));
     }
-
-    @PutMapping("/{admissionId}/putdoctor/{doctorId}")
-    public ResponseEntity<Admission> putDoctor(@PathVariable Long admissionId, @PathVariable Long doctorId) {
-        return ResponseEntity.ok(this.admissionService.putDoctor(admissionId, doctorId));
-    }
-
-    @PatchMapping("/{admissionId}/removedoctor/{doctorId}")
-    public ResponseEntity<Admission> removeDoctor(@PathVariable Long admissionId, @PathVariable Long doctorId) {
-        return ResponseEntity.ok(this.admissionService.removeDoctor(admissionId, doctorId));
-    }
 }
