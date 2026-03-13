@@ -97,6 +97,9 @@ public class AdmissionService {
         Admission admission = this.getById(admissionId);
         Doctor doctor = this.doctorService.getDoctorToAdmission(doctorId);
         this.validateAdmissionBeforePut(admission, doctor);
+        if (!admission.getBed().getRoom().getWard().getSpecialty().equals(doctor.getSpecialty())) {
+            throw new RuntimeException("THE SPECIALTY OF THE DOCTOR AND THE BED IS DIFFERENT");
+        }
         admission.getDoctors().add(doctor);
         this.updateDoctor(doctor, admission);
         this.admissionRepository.save(admission);
@@ -105,10 +108,10 @@ public class AdmissionService {
 
     private void validateAdmissionBeforePut(Admission admission, Doctor doctor) {
         if (Objects.nonNull(admission.getDischargedAt()) || AdmissionStatus.INACTIVE.equals(admission.getStatus())) {
-            throw new RuntimeException("The admission with id " + admission.getId() + "cannot be updated because is discharged");
+            throw new RuntimeException("The admission with id " + admission.getId() + " cannot be updated because is discharged");
         }
         if (admission.getDoctors().contains(doctor)) {
-            throw new RuntimeException("the doctor with id " + doctor.getId() + "is already in the admission");
+            throw new RuntimeException("the doctor with id " + doctor.getId() + " is already in the admission");
         }
     }
 
@@ -117,16 +120,16 @@ public class AdmissionService {
         Doctor doctor = this.doctorService.getDoctorToAdmission(doctorId);
         this.validateAdmissionBeforeRemove(admission,doctor);
         admission.getDoctors().remove(doctor);
-        doctor.getAdmissions().remove(admission);
+        this.admissionRepository.save(admission);
         return admission;
     }
 
     private void validateAdmissionBeforeRemove(Admission admission, Doctor doctor) {
         if (Objects.nonNull(admission.getDischargedAt()) || AdmissionStatus.INACTIVE.equals(admission.getStatus())) {
-            throw new RuntimeException("The admission with id " + admission.getId() + "cannot be updated because is discharged");
+            throw new RuntimeException("The admission with id " + admission.getId() + " cannot be updated because is discharged");
         }
         if (!admission.getDoctors().contains(doctor)) {
-            throw new RuntimeException("the doctor with id " + doctor.getId() + "is not in the admission");
+            throw new RuntimeException("the doctor with id " + doctor.getId() + " is not in the admission");
         }
     }
 }
