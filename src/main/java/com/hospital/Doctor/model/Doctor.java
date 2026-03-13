@@ -31,7 +31,7 @@ public class Doctor {
     @NonNull
     private String name;
 
-    @Column(name = "crm")
+    @Column(name = "crm", unique = true)
     @NonNull
     private String crm;
 
