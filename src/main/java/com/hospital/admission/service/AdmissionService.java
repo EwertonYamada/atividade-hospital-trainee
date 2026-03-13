@@ -56,8 +56,7 @@ public class AdmissionService {
     private Admission prepareAdmission(AdmissionRequest request) {
         Patient patient = this.patientService.getPatientToAdmission(request.patientId());
         Bed bed = this.bedService.getAvailableBedById(request.bedId());
-        BedType bedType = request.bedType();
-        return new Admission(bed, patient, bedType);
+        return new Admission(bed, patient);
     }
 
     private Admission getById(Long admissionId) {
@@ -83,10 +82,10 @@ public class AdmissionService {
     }
 
     public Admission transfer(AdmissionRequest request) {
-        Admission prepare = prepareAdmission(request);
 
-        Admission pastAdmission = this.admissionRepository.findAdmissionByPatientAndStatus_Active(prepare.getPatient());
+        Admission pastAdmission = this.admissionRepository.findActiveAdmission(request.patientId());
         discharge(pastAdmission.getId());
+        Admission prepare = prepareAdmission(request);
 
         Admission newAdmission = prepare;
         this.admissionRepository.save(newAdmission);

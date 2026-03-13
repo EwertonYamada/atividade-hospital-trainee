@@ -26,8 +26,6 @@ public class Admission {
     @JoinColumn(name = "bed_id")
     private Bed bed;
 
-    private BedType bedType;
-
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
@@ -42,9 +40,8 @@ public class Admission {
     @Enumerated(EnumType.STRING)
     private AdmissionStatus status;
 
-    public Admission(Bed bed, Patient patient, BedType bedType) {
+    public Admission(Bed bed, Patient patient) {
         this.bed = bed;
-        this.bedType = bedType;
         this.patient = patient;
         this.admittedAt = new Date();
         this.dischargedAt = null;

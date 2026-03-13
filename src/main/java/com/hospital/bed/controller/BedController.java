@@ -4,6 +4,7 @@ import com.hospital.bed.dto.BedRequest;
 import com.hospital.bed.enums.BedStatus;
 import com.hospital.bed.model.Bed;
 import com.hospital.bed.service.BedService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

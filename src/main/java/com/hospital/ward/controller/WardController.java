@@ -1,4 +1,4 @@
-package com.hospital.ward;
+package com.hospital.ward.controller;
 
 import com.hospital.ward.dto.WardRequest;
 import com.hospital.ward.model.Ward;

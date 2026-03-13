@@ -4,7 +4,6 @@ import com.hospital.bed.enums.BedType;
 
 public record AdmissionRequest(
         Long bedId,
-        Long patientId,
-        BedType bedType
+        Long patientId
 ) {
 }
