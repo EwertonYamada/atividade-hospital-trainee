@@ -14,20 +14,22 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/visits")
 public class VisitController {
 
-    @Autowired
-    private VisitService visitService;
+
+    private final VisitService visitService;
+
+    public VisitController(VisitService visitService) {this.visitService = visitService;}
 
 
     @PostMapping("/start")
     public ResponseEntity<Visit> registerEntry(@Valid @RequestBody VisitRequest request) {
-        Visit visit = visitService.startVisit(request);
+        Visit visit = this.visitService.startVisit(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(visit);
     }
 
 
     @PutMapping("/{id}/end")
     public ResponseEntity<Visit> registerExit(@PathVariable Long id) {
-        Visit visit = visitService.endVisit(id);
+        Visit visit = this.visitService.endVisit(id);
         return ResponseEntity.ok(visit);
     }
 }

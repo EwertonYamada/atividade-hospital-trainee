@@ -14,18 +14,23 @@ import java.time.LocalDateTime;
 @Service
 public class VisitService {
 
-    @Autowired private VisitRepository visitRepository;
-    @Autowired private PatientRepository patientRepository;
-    @Autowired private AdmissionRepository admissionRepository;
+    private final VisitRepository visitRepository;
+    private final PatientRepository patientRepository;
+    private final AdmissionRepository admissionRepository;
 
+    public VisitService(VisitRepository visitRepository, PatientRepository patientRepository, AdmissionRepository admissionRepository) {
+        this.visitRepository = visitRepository;
+        this.patientRepository = patientRepository;
+        this.admissionRepository = admissionRepository;
+    }
 
 
     public Visit startVisit(VisitRequest request) {
-        Patient patient = patientRepository.findById(request.patientId())
+        Patient patient = this.patientRepository.findById(request.patientId())
                 .orElseThrow(() -> new RuntimeException("Paciente não encontrado"));
 
         // Só é possível registrar visita a paciente com internação ativa
-        boolean isHospitalized = admissionRepository.existsByPatientIdAndStatus(
+        boolean isHospitalized = this.admissionRepository.existsByPatientIdAndStatus(
                 patient.getId(),
                 AdmissionStatus.ACTIVE
         );
@@ -35,7 +40,7 @@ public class VisitService {
         }
 
         // Um paciente pode receber várias visitas no mesmo dia, porém um visitante por vez
-        boolean hasVisitor = visitRepository.existsByPatientIdAndExitDateTimeIsNull(patient.getId());
+        boolean hasVisitor = this.visitRepository.existsByPatientIdAndExitDateTimeIsNull(patient.getId());
         if (hasVisitor) {
             throw new RuntimeException("O paciente já está com visita");
         }
@@ -47,12 +52,12 @@ public class VisitService {
         visit.setEntryDateTime(LocalDateTime.now()); // Registrar visita com a data corrente (now)
         visit.setPatient(patient);
 
-        return visitRepository.save(visit);
+        return this.visitRepository.save(visit);
     }
 
 
     public Visit endVisit(Long visitId) {
-        Visit visit = visitRepository.findById(visitId)
+        Visit visit = this.visitRepository.findById(visitId)
                 .orElseThrow(() -> new RuntimeException("Visita não encontrada."));
 
         if (visit.getExitDateTime() != null) {
@@ -60,6 +65,6 @@ public class VisitService {
         }
 
         visit.setExitDateTime(LocalDateTime.now());
-        return visitRepository.save(visit);
+        return this.visitRepository.save(visit);
     }
 }
