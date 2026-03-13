@@ -3,6 +3,7 @@ package com.hospital.hospital.controller;
 import com.hospital.hospital.dto.HospitalRequest;
 import com.hospital.hospital.model.Hospital;
 import com.hospital.hospital.service.HospitalService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class HospitalController {
     }
 
     @PostMapping
-    public ResponseEntity<Hospital> create(@RequestBody HospitalRequest hospital) {
+    public ResponseEntity<Hospital> create( @RequestBody HospitalRequest hospital) {
         return ResponseEntity.ok(this.hospitalService.create(hospital));
     }
 

@@ -25,4 +25,9 @@ public class AdmissionController {
     public ResponseEntity<Admission> discharge(@PathVariable Long admissionId) {
         return ResponseEntity.ok(this.admissionService.discharge(admissionId));
     }
+
+    @PostMapping("/transfer")
+    public ResponseEntity<Admission> transfer(@RequestBody AdmissionRequest request) {
+        return ResponseEntity.ok(this.admissionService.transfer(request));
+    }
 }

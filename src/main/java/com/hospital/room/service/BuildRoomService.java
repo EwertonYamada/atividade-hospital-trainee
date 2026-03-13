@@ -33,7 +33,7 @@ public class BuildRoomService {
                 Integer nextRoomNumber = lastRegisteredRoomNumber + i + 1;
                 String code = specialtyPrefix.concat(String.valueOf(nextRoomNumber));
                 Room room = new Room(code, ward);
-                List<Bed> beds = this.buildBedService.buildBed(room, roomRequest.bedRequest().numberOfBeds());
+                List<Bed> beds = this.buildBedService.buildBed(room, roomRequest.bedRequest().numberOfBeds(), roomRequest.bedRequest().bedType());
                 room.setBeds(beds);
                 rooms.add(room);
             }

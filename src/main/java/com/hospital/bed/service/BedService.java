@@ -7,6 +7,7 @@ import com.hospital.bed.repository.BedRepository;
 import com.hospital.room.model.Room;
 import com.hospital.room.service.RoomService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,9 +25,9 @@ public class BedService {
         this.buildBedService = buildBedService;
     }
 
-    public List<Bed> create(Long roomId, BedRequest bedRequest) {
+    public List<Bed> create(Long roomId, @Valid BedRequest bedRequest) {
         Room room = this.roomService.getById(roomId);
-        List<Bed> beds = this.buildBedService.buildBed(room, bedRequest.numberOfBeds());
+        List<Bed> beds = this.buildBedService.buildBed(room, bedRequest.numberOfBeds(), bedRequest.bedType());
         return this.bedRepository.saveAll(beds);
     }
 

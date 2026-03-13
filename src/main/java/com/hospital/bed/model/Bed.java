@@ -5,9 +5,13 @@ import com.hospital.bed.enums.BedStatus;
 import com.hospital.bed.enums.BedType;
 import com.hospital.room.model.Room;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+
 
 @Entity
 @Getter
@@ -33,12 +37,13 @@ public class Bed {
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
+    @NotNull(message = "bedType must be defined")
     private BedType bedType;
 
-    public Bed(Room room, Integer nextBedNumber) {
+    public Bed(Room room, Integer nextBedNumber, @NotBlank BedType bedType) {
         this.room = room;
         this.bedNumber = nextBedNumber;
-        this.bedType = BedType.INFIRMARY;
+        this.bedType = bedType;
         this.status = BedStatus.UNOCCUPIED;
     }
 }
