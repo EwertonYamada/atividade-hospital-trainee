@@ -9,6 +9,6 @@ public enum ExamName {
 	espirometria,
 	endoscopia,
 	cistoscopia,
-	predisposição_genética,
-	painéis_genéticos
+	predisposicao_genetica,
+	paineis_geneticos
 }

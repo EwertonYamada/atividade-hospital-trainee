@@ -11,9 +11,7 @@ import java.util.List;
 @Repository
 public interface AdmissionRepository extends JpaRepository<Admission, Long> {
 
-
-	@Query("SELECT a.doctors from Admission a where a.patient.id = :patient_id ")
-	public List<Doctor> doctorsPerPatient(Long patient_id);
-
+	@Query("SELECT a.doctors from Admission a where a.patient.id = :patientId ")
+	public List<Doctor> doctorsPerPatient(Long patientId);
 
 }

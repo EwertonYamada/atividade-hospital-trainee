@@ -35,7 +35,6 @@ public class Exam {
 	@Column(name = "exam_date_time")
 	private LocalDateTime dateTime;
 
-
 	@ManyToOne
 	@JoinColumn(name = "patient_id")
 	private Patient patient;
@@ -43,7 +42,6 @@ public class Exam {
 	@ManyToOne
 	@JoinColumn(name = "doctor_id")
 	private Doctor doctor;
-
 
 	public Exam(ExamName name, ExamType type, ExamStatus status, LocalDateTime dateTime, Patient patient, Doctor doctor) {
 		this.name = name;
