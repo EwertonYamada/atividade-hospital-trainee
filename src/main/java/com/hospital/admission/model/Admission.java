@@ -1,6 +1,5 @@
 package com.hospital.admission.model;
 
-import com.hospital.Doctor.model.Doctor;
 import com.hospital.admission.enums.AdmissionStatus;
 import com.hospital.bed.model.Bed;
 import com.hospital.admission.enums.EventType;
@@ -9,9 +8,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Data
@@ -40,20 +37,11 @@ public class Admission {
     @Enumerated(EnumType.STRING)
     private AdmissionStatus status;
 
-    public Admission(Bed bed, Patient patient, Doctor doctor) {
+    public Admission(Bed bed, Patient patient) {
         this.bed = bed;
         this.patient = patient;
         this.admittedAt = new Date();
         this.dischargedAt = null;
         this.status = AdmissionStatus.ACTIVE;
-        this.doctors.add(doctor);
     }
-
-    @ManyToMany
-    @JoinTable(
-            name =  "admission_doctor",
-            joinColumns = @JoinColumn(name = "admission_id"),
-            inverseJoinColumns = @JoinColumn(name = "doctor_id")
-    )
-    private List<Doctor> doctors = new ArrayList<>();
 }
