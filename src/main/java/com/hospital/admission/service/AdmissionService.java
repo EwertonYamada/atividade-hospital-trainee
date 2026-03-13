@@ -2,6 +2,7 @@ package com.hospital.admission.service;
 
 import com.hospital.admission.enums.AdmissionStatus;
 import com.hospital.bed.enums.BedStatus;
+import com.hospital.bed.enums.BedType;
 import com.hospital.bed.model.Bed;
 import com.hospital.bed.service.BedService;
 import com.hospital.admission.dto.AdmissionRequest;
@@ -55,7 +56,8 @@ public class AdmissionService {
     private Admission prepareAdmission(AdmissionRequest request) {
         Patient patient = this.patientService.getPatientToAdmission(request.patientId());
         Bed bed = this.bedService.getAvailableBedById(request.bedId());
-        return new Admission(bed, patient);
+        BedType bedType = request.bedType();
+        return new Admission(bed, patient, bedType);
     }
 
     private Admission getById(Long admissionId) {
@@ -78,5 +80,23 @@ public class AdmissionService {
     private void validateAdmissionBeforeDischarge(Admission admission) {
         if (Objects.nonNull(admission.getDischargedAt()) || AdmissionStatus.INACTIVE.equals(admission.getStatus()))
             throw new RuntimeException("The patient with id " +admission.getPatient().getId() + " has already been discharged.");
+    }
+
+    private Admission transfer(AdmissionRequest request) {
+        // o patient must be internado
+        // quando pedir transferencia a internacao atual deve ser fechada e abrir uma nova
+        // preciso buscar o admission (ACTIVE) do patient em questao e chamar o discharge
+        //          → fazer o admission novo com a timestamp do discharge e a bed do transfer
+        Admission prepare = prepareAdmission(request);
+
+        Admission pastAdmission = this.admissionRepository.findAdmissionByPatientAndStatus_Active(prepare.getPatient());
+        discharge(pastAdmission.getId());
+
+        Admission newAdmission = prepare;
+        this.admissionRepository.save(newAdmission);
+        this.updateBed(newAdmission.getBed(), BedStatus.OCCUPIED);
+        this.updatePatient(newAdmission.getPatient(), Boolean.TRUE);
+        return newAdmission;
+
     }
 }
