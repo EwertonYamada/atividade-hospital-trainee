@@ -1,0 +1,10 @@
+package com.hospital.exams.enums;
+
+public enum ExamType {
+	LABORATORIAL,
+	IMAGEM,
+	FUNCIONAL,
+	ENDOSCOPICO,
+	GENETICO_MOLECULAR,
+	GINECOLOGICO_UROLOGICO
+}

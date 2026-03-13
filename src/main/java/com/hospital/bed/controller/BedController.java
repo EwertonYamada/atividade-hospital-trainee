@@ -25,7 +25,7 @@ public class BedController {
     }
 
     @PatchMapping("/{id}/update-bed-status")
-    public ResponseEntity<Bed> updateBedStatus(@PathVariable Long bedId, @RequestParam BedStatus bedStatus) {
-        return ResponseEntity.ok(this.bedService.updateBedStatus(bedId, bedStatus));
+    public ResponseEntity<Bed> updateBedStatus(@PathVariable Long id, @RequestParam BedStatus bedStatus) {
+        return ResponseEntity.ok(this.bedService.updateBedStatus(id, bedStatus));
     }
 }
