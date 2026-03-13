@@ -3,6 +3,7 @@ package com.hospital.Doctor.service;
 import com.hospital.Doctor.dto.DoctorRequest;
 import com.hospital.Doctor.model.Doctor;
 import com.hospital.Doctor.repository.DoctorRepository;
+import com.hospital.admission.model.Admission;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,5 +36,9 @@ public class DoctorService {
     public Doctor getById(Long doctorId) {
         return this.doctorRepository.findById(doctorId).orElseThrow(() ->
                 new EntityNotFoundException("Doctor with id " + doctorId + " not found"));
+    }
+
+    public void updateDoctor(Doctor doctor, Admission admission) {
+        doctor.getAdmissions().add(admission);
     }
 }

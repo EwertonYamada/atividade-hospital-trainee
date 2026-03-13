@@ -46,10 +46,6 @@ public class AdmissionService {
         return admission;
     }
 
-    private void updateDoctor(Doctor doctor, Admission admission) {
-        doctor.getAdmissions().add(admission);
-    }
-
     private void updatePatient(Patient patient, Boolean isHospitalized) {
         patient.setHospitalized(isHospitalized);
         this.patientService.save(patient);
@@ -101,7 +97,7 @@ public class AdmissionService {
             throw new RuntimeException("THE SPECIALTY OF THE DOCTOR AND THE BED IS DIFFERENT");
         }
         admission.getDoctors().add(doctor);
-        this.updateDoctor(doctor, admission);
+        this.doctorService.updateDoctor(doctor, admission);
         this.admissionRepository.save(admission);
         return admission;
     }
