@@ -27,4 +27,5 @@ public class Doctor {
     @Column(name = "specialty")
     @Enumerated(EnumType.STRING)
     private Specialty specialty;
+
 }

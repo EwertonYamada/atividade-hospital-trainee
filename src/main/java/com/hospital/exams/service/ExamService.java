@@ -3,6 +3,7 @@ package com.hospital.exams.service;
 
 import com.hospital.Doctor.model.Doctor;
 import com.hospital.Doctor.service.DoctorService;
+import com.hospital.admission.repository.AdmissionRepository;
 import com.hospital.exams.dto.ExamRequest;
 import com.hospital.exams.enums.ExamStatus;
 import com.hospital.exams.model.Exam;
@@ -20,18 +21,24 @@ public class ExamService {
 	private final ExamRepository examRepository;
 	private final PatientService patientService;
 	private final DoctorService doctorService;
+	private final AdmissionRepository admissionRepository;
 
 
-	public ExamService(ExamRepository examRepository, PatientService patientService, DoctorService doctorService) {
+	public ExamService(ExamRepository examRepository, PatientService patientService, DoctorService doctorService, AdmissionRepository admissionRepository) {
 		this.examRepository = examRepository;
 		this.patientService = patientService;
 		this.doctorService = doctorService;
+		this.admissionRepository = admissionRepository;
 	}
 
 	public Exam create(ExamRequest examRequest){
 		Patient patient = this.patientService.getPatientToDischarge(examRequest.getPatient_id());
+
 		Doctor doctor = doctorService.getById(examRequest.getDoctor_id());
-		examRequest.setDate_time(LocalDateTime.now().plusHours(1));
+
+		check_doctor(examRequest.getPatient_id(),doctor);
+
+		examRequest.setDate_time(examRequest.getDate_time());
 		this.check_time(examRequest.getDate_time(),examRequest.getPatient_id());
 
 		Exam exam = new Exam(examRequest.getExam_name(),examRequest.getExam_type(), ExamStatus.SCHEDULED,examRequest.getDate_time(),patient,doctor);
@@ -51,6 +58,12 @@ public class ExamService {
 			throw new RuntimeException("Intervalo Entre Agendamentos Invalido");
 		}
 
+	}
+
+	private void check_doctor(Long patient_id,Doctor doctor){
+		if (!this.admissionRepository.doctorsPerPatient(patient_id).contains(doctor)){
+			throw new RuntimeException("Medico nao responsavel por este paciente");
+		}
 	}
 
 
