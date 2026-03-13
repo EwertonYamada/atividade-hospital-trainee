@@ -82,11 +82,7 @@ public class AdmissionService {
             throw new RuntimeException("The patient with id " +admission.getPatient().getId() + " has already been discharged.");
     }
 
-    private Admission transfer(AdmissionRequest request) {
-        // o patient must be internado
-        // quando pedir transferencia a internacao atual deve ser fechada e abrir uma nova
-        // preciso buscar o admission (ACTIVE) do patient em questao e chamar o discharge
-        //          → fazer o admission novo com a timestamp do discharge e a bed do transfer
+    public Admission transfer(AdmissionRequest request) {
         Admission prepare = prepareAdmission(request);
 
         Admission pastAdmission = this.admissionRepository.findAdmissionByPatientAndStatus_Active(prepare.getPatient());
