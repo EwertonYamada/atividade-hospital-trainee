@@ -1,7 +1,8 @@
 package com.hospital.exams.service;
 
+
 import com.hospital.Doctor.model.Doctor;
-import com.hospital.Doctor.repository.repo;
+import com.hospital.Doctor.service.DoctorService;
 import com.hospital.exams.dto.ExamRequest;
 import com.hospital.exams.enums.ExamStatus;
 import com.hospital.exams.model.Exam;
@@ -18,18 +19,18 @@ public class ExamService {
 
 	private final ExamRepository examRepository;
 	private final PatientService patientService;
-	private final repo repo;
+	private final DoctorService doctorService;
 
 
-	public ExamService(ExamRepository examRepository, PatientService patientService, repo repo) {
+	public ExamService(ExamRepository examRepository, PatientService patientService, DoctorService doctorService) {
 		this.examRepository = examRepository;
 		this.patientService = patientService;
-		this.repo = repo;
+		this.doctorService = doctorService;
 	}
 
 	public Exam create(ExamRequest examRequest){
 		Patient patient = this.patientService.getPatientToDischarge(examRequest.getPatient_id());
-		Doctor doctor = repo.save(new Doctor());
+		Doctor doctor = doctorService.getById(examRequest.getDoctor_id());
 		examRequest.setDate_time(LocalDateTime.now().plusHours(1));
 		this.check_time(examRequest.getDate_time(),examRequest.getPatient_id());
 
