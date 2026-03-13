@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class ExamRequest {
 
 	private Long patient_id;
-	private Long doctor_id = 0L;
+	private Long doctor_id;
 
 	@Enumerated(EnumType.STRING)
 	private ExamName exam_name;
